@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "map-backend"
+version = "0.1.0"
+description = ""
+authors = ["peterxcli <peterxcli@gmail.com>"]
+readme = "README.md"
+packages = [{include = "map_backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+fastapi = "^0.95.2"
+loguru = "^0.7.0"
+python-dotenv = "^1.0.0"
+websockets = "^11.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
