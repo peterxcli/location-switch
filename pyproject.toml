@@ -13,6 +13,7 @@ fastapi = "^0.95.2"
 loguru = "^0.7.0"
 python-dotenv = "^1.0.0"
 websockets = "^11.0.3"
+typing-extensions = "^4.6.2"
 
 
 [build-system]

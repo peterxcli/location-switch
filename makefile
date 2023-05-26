@@ -31,7 +31,7 @@ test:
 ci-bundle: analysis format test
 
 dev:
-	poetry run uvicorn app:APP --reload --host 0.0.0.0
+	cd server && poetry run uvicorn app:APP --reload --host 0.0.0.0
 
 clean:
 	find . -type f -name '*.py[co]' -delete
