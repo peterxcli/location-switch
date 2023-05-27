@@ -53,7 +53,8 @@ class userModel(TypedDict):
 // TBD
 
 ### Frontend state
-- `myself` : dict
+> **TBD : Is mySelf state necessary ?**
+- `myself` : dict 
     ```
     { 'user' : 'ouo' , 'pos' : [11.22,33.44]}
     ```
