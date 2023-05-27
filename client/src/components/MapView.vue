@@ -9,9 +9,10 @@ import { defineComponent } from 'vue';
 import L from 'leaflet';
 
 var mapObject = null;
+var userMarker = null;
 var posX = 25.042474;
 var posY = 121.513729;
-const step = 0.0001;
+const step = 0.00005;
 
 var isUp = false;
 var isDown = false;
@@ -50,6 +51,7 @@ document.addEventListener(`keydown`, e => {
     posY += isRight ? step : 0;
 
 	mapObject.panTo([ posX , posY ]);
+    userMarker.setLatLng([ posX , posY ]).update();
 });
 
 document.addEventListener(`keyup`, e => {
@@ -84,6 +86,8 @@ export default defineComponent({
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 20,
         }).addTo(mapObject);
+
+        userMarker = L.marker([posX,posY]).addTo(mapObject);
     },
     name: 'MapView',
     methods: {
