@@ -2,7 +2,7 @@ import user from '../../api/user'
 import Vuex from 'vuex'
 
 const state = () => ({
-    all : {}, // { 'user1' : { 'pos' : [11.22,33.44] } , 'user2' : { 'pos' : [11.22,33.44] }
+    all : {}, // {  'id1' : { 'user : 'user1' , 'pos' : [11.22,33.44] } , 'id2' : { 'user' : 'user2' , 'pos' : [11.22,33.44] }
     checkIn : [] // [ { 'user' : 'jason', 'pos' : [11.22,33.44] , 'img' : 'image_url' , 'content' : 'Save water for beer!' } , { 'user' : 'OuO', 'pos' : [11.22,33.44] , 'img' : 'image_url' , 'content' : 'ouo' }  ]
 })
 
@@ -23,9 +23,16 @@ const mutations = {
         state.all = users
     },
 
-    updateUserById(state, id, _user) {
-        const user = state.all.find(user => user.id === id)
-        user = _user
+    updateUserById(state, id, _user) { // id:str , _user:{ 'user' : 'user1' , 'pos' : [11.22,33.44] }   
+        // const user = state.all.find(user => user.id === id)
+        // user = _user
+        if( _user['pos'] != null ){
+            state.all[id]['pos'] = _user['pos'];
+        }
+        if( _user['user'] != null ){
+            state.all[id]['user'] = _user['user'];
+        }
+
     },
 
     addUser(state, username,pos) { // username:str , pos:[lat,lng]
