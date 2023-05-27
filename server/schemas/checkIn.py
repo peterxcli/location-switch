@@ -1,20 +1,21 @@
 from typing import List, Optional, Union, Tuple, Dict
 from pydantic import BaseModel, Field
+from datetime import datetime
 
-class User(BaseModel):
+class CheckIn(BaseModel):
     id: Optional[Union[str, int]] = Field(None)
+    user_id: str = Field(None)
     username: Optional[str] = Field(None)
     pos: Optional[Tuple[float, float]] = Field(None)
-    message: Optional[str] = Field(None)
+    img: Optional[str] = Field(None)
+    content: Optional[str] = Field(None)
+    created_at: Optional[str] = Field(None)
 
-class UserReceived(BaseModel):
+class CheckInReceived(BaseModel):
     event: str = Field(...) # "message" | "join" | "leave" | "check_in" | "all_info" | "update"
-    username: Optional[str] = Field(None)
     pos: Optional[Tuple[float, float]] = Field(None)
-    message: Optional[str] = Field(None)
+    img: Optional[str] = Field(None)
+    content: Optional[str] = Field(None)
 
-class UserDict(BaseModel):
-    users: Dict[str, User]
-
-class UserSend(User):
-    event: str # "update" | "message" | "join" | "leave" | "check_in"
+class CheckInSend(CheckIn):
+    event: str
