@@ -7,11 +7,11 @@ from fastapi.responses import HTMLResponse
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Union
 import schemas
-from models import userManager
+from models import userManager, checkInManager
 
 router = APIRouter()
 
-@router.get("/list")
+@router.get("/list", response_model=Dict[str, schemas.User])
 async def get_user_list():
     return {k: v.dict(exclude_unset=True, exclude_none=True) for k, v in userManager.users.items() if v}
 
@@ -21,14 +21,24 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     try:
         while True:
             data = await websocket.receive_text()
-            event:schemas.UserReceived = json.loads(data)
-            event_name:str = str(event["event"])
-            if event_name == 'join':
-                await userManager.broadcast(f"Client #{client_id} joined the chat")
+            event:schemas.UserReceived = schemas.UserReceived(**json.loads(data))
+            event_name:str = str(event.event)
+            if event_name == 'new_user':
+                await userManager.update_user(client_id, event, websocket)
             elif event_name == "all_info":
                 await userManager.send_all_info_to_one_client(websocket)
-            elif event_name == "update":
-                await userManager.update_user(websocket, client_id, event)
+            elif event_name == "move":
+                await userManager.update_user(client_id, event, websocket)
+            elif event_name == 'message':
+                await userManager.update_message(client_id, event, websocket)
+            elif event_name == 'check_in':
+                checkInReceived = schemas.CheckInReceived(**json.loads(data))
+                await userManager.update_check_in(
+                        check_in_list=checkInManager.check_in_list,
+                        client_id=client_id,
+                        event=checkInReceived,
+                        websocket=websocket
+                    )
     except WebSocketDisconnect:
         userManager.disconnect(websocket)
         await userManager.broadcast(f"Client #{client_id} left the chat")
