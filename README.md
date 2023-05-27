@@ -23,7 +23,7 @@
 （ 分享資訊 ）
 
 ### Actions
-- Client event : 
+- Client to backend : 
     - interface : `{ 'event':'xxx' , .... }`
     - `event` : 
         - `new_user`
@@ -37,7 +37,7 @@
     - message : 
         - `{ 'event':'message' , 'user' : 'owen' , 'message' : 'Hi all!' }`
     - check_in : 
-        - `{ 'event':'check_in' , 'user' : 'ouo' , 'pos' : [65.12,304.3] , 'message' : 'Lunch :p' }`
+        - `{ 'event':'check_in' , 'user' : 'ouo' , 'pos' : [65.12,304.3], 'img' : 'image_url' , 'content' : 'Lunch :p' }`
 
 ### schema
 
@@ -53,10 +53,24 @@ class userModel(TypedDict):
 // TBD
 
 ### Frontend state
-- myself : 
-    `{ 'user' : 'ouo' , 'pos' : [11.22,33.44]}`
-- users : 
-    `[ {'user' : 'jason' , 'pos' : [12.3,3.21] } , {'user' : 'jason' , 'pos' : [12.3,3.21] } ]`
+- `myself` : dict
+    ```
+    { 'user' : 'ouo' , 'pos' : [11.22,33.44]}
+    ```
+- `users` : dict
+    ```
+    { 
+        'jason' , { 'pos' : [12.3,3.21] } ,
+        'ouob' , { 'pos' : [12.3,3.21] },
+    }
+    ```
+- `checkIn` : list
+    ```
+    [ 
+        { 'user' : 'jason', 'pos' : [11.22,33.44] , 'img' : 'image_url' , 'content' : 'Save water for beer!' } ,
+        { 'user' : 'OuO', 'pos' : [11.22,33.44] , 'img' : 'image_url' , 'content' : 'ouo' } ,
+    ]
+    ```
 
 
 
