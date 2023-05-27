@@ -4,6 +4,24 @@
 > ( xxx ) 都是額外的功能
 
 ## Features 
+
+- User
+先以所有用戶
+( 有時間再加 DB , 輸入使用者名稱，uniqe id )
+
+
+- WASD 移動
+
+- 頭上冒泡泡訊息：
+右邊一個側欄
+文字 
+（ 貼圖 ）
+
+- 打卡（ 出現一個紅點 類似 Google map
+一樣透過右邊側欄
+店家 星星數 距離
+（ 分享資訊 ）
+
 ### Actions
 - Client event : 
     - interface : `{ 'event':'xxx' , .... }`
@@ -31,22 +49,14 @@ class userModel(TypedDict):
     message: str
 ```
 
-- User
-先以所有用戶
-( 有時間再加 DB , 輸入使用者名稱，uniqe id )
+### backend ws routes
+// TBD
 
-
-- WASD 移動
-
-- 頭上冒泡泡訊息：
-右邊一個側欄
-文字 
-（ 貼圖 ）
-
-- 打卡（ 出現一個紅點 類似 Google map
-一樣透過右邊側欄
-店家 星星數 距離
-（ 分享資訊 ）
+### Frontend state
+- myself : 
+    `{ 'user' : 'ouo' , 'pos' : [11.22,33.44]}`
+- users : 
+    `[ {'user' : 'jason' , 'pos' : [12.3,3.21] } , {'user' : 'jason' , 'pos' : [12.3,3.21] } ]`
 
 
 
@@ -63,3 +73,5 @@ class userModel(TypedDict):
 [Leaflet.js ( open source map api ) ](https://leafletjs.com/)
 
 [ Mask Map : Vue + Leaflet](https://5xruby.tw/posts/how-to-create-maskmap-by-vuejs-and-osm)
+
+[How to change map center in leaflet.js](https://stackoverflow.com/questions/12735303/how-to-change-the-map-center-in-leaflet-js)
