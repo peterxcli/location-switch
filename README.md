@@ -22,6 +22,10 @@
 店家 星星數 距離
 （ 分享資訊 ）
 
+### localstorage
+- `username`: str
+- `userId` : uuid4 ( from `utils` )
+
 ### Actions
 - Client to backend : 
     - interface : `{ 'event':'xxx' , .... }`
