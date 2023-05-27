@@ -1,6 +1,12 @@
 <script setup>
 import SideBar from './components/SideBar.vue'
 import MapView from './components/MapView.vue'
+import { onMounted } from 'vue'
+onMounted(() => {
+  if (window.localStorage.getItem('userId') == null) {
+    window.localStorage.setItem('userId', Math.random().toString(36).substr(2, 9))
+  }
+})
 </script>
 
 <template>
