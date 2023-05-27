@@ -6,6 +6,7 @@
   
 <script>
 import { defineComponent } from 'vue';
+import { mapState, mapActions } from 'vuex';
 import L from 'leaflet';
 
 var mapObject = null;
@@ -20,24 +21,24 @@ var isRight = false;
 
 document.addEventListener(`keydown`, e => {
 
-	if (e.code == `KeyW` || e.code == `ArrowUp`) {
-		posX += step;
-	} else if (e.code == `KeyS` || e.code == `ArrowDown`) {
-		posX -= step;
-	}
-    
+    if (e.code == `KeyW` || e.code == `ArrowUp`) {
+        posX += step;
+    } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
+        posX -= step;
+    }
+
     if (e.code == `KeyA` || e.code == `ArrowLeft`) {
-		posY -= step;
-	} else if (e.code == `KeyD` || e.code == `ArrowRight`) {
-		posY += step;
-	}
+        posY -= step;
+    } else if (e.code == `KeyD` || e.code == `ArrowRight`) {
+        posY += step;
+    }
 
     if (e.code == `KeyW` || e.code == `ArrowUp`) {
         isUp = true;
     } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
         isDown = true;
     }
-    
+
     if (e.code == `KeyA` || e.code == `ArrowLeft`) {
         isLeft = true;
     } else if (e.code == `KeyD` || e.code == `ArrowRight`) {
@@ -49,7 +50,7 @@ document.addEventListener(`keydown`, e => {
     posY -= isLeft ? step : 0;
     posY += isRight ? step : 0;
 
-	mapObject.panTo([ posX , posY ]);
+    mapObject.panTo([posX, posY]);
 });
 
 document.addEventListener(`keyup`, e => {
@@ -58,7 +59,7 @@ document.addEventListener(`keyup`, e => {
     } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
         isDown = false;
     }
-    
+
     if (e.code == `KeyA` || e.code == `ArrowLeft`) {
         isLeft = false;
     } else if (e.code == `KeyD` || e.code == `ArrowRight`) {
@@ -68,15 +69,19 @@ document.addEventListener(`keyup`, e => {
 
 
 export default defineComponent({
+    computed: {
+        ...mapState({
+            users: state => state.users.all
+        })
+    },
     data() {
         return {
             streetMap: null,
         }
     },
     mounted() {
-
         mapObject = L.map('map', {
-            center: [ posX , posY ],
+            center: [posX, posY],
             zoom: 18,
         });
 
@@ -91,14 +96,28 @@ export default defineComponent({
             // do something
         }
     },
+    async created() {
+        await this.$store.dispatch('users/getAllUsers')
+        let users = this.$store.state.users.all;
+        for (let id in users) {
+            const user = {...users[id]};
+            console.log(user);
+            if (!user.hasOwnProperty('pos')) continue;
+            const pos = Object.values(user.pos);
+            console.log(pos);
+            L.marker([pos[0], pos[1]]).addTo(mapObject);
+        }
+    }
 });
 </script>
-  
+
 <style>
 #MapView {
     flex: 3 1 0;
     color: #959595;
 }
-#map { height: 100vh; }
+
+#map {
+    height: 100vh;
+}
 </style>
-  
