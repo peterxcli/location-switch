@@ -11,9 +11,9 @@
       <div class="form-col">
         <form class="pos-form">
           <label for="lat-input">lat:</label>
-          <input id="lat-input" type="text" placeholder="25.042474"/>
+          <input v-bind="pos[0]" id="lat-input" type="text" placeholder="25.042474"/>
           <label for="lon-input">lon:</label>
-          <input id="lon-input" type="text" placeholder="121.513729"/>
+          <input v-bind="pos[1]" id="lon-input" type="text" placeholder="121.513729"/>
           <button type="button" @click="updatePosition">Go</button>
         </form>
       </div>
@@ -66,11 +66,15 @@ export default defineComponent({
     data (){
       return {
         username : localStorage.getItem('username') || 'Jason',
+        pos : []
       }
     },
+    mounted(){
+      this.pos = this.$store.getters["myself/getPos"];
+    },
     methods: {
-      async func() {
-        // do something
+      updatePosition() {
+        this.$store.dispatch("myself/setPos", this.pos);
       }
     },
 });
