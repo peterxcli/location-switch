@@ -28,13 +28,13 @@
         <form class="check-in-form">
           <label for="url-input">image url:</label>
           <br>
-          <input id="url-input" type="text" placeholder="https://img.url.com/321"/>
+          <input v-model="url" id="url-input" type="text" placeholder="https://img.url.com/321"/>
           <br>
           <label for="content-input">content:</label>
           <br>
-          <input id="content-input" type="text" placeholder="check in post ..."/>
+          <input v-model="content" id="content-input" type="text" placeholder="check in post ..."/>
           <br>
-          <button type="button" @click="updatePosition">check in</button>
+          <button type="button" @click="checkIn">check in</button>
         </form>
       </div>
     </div>
@@ -59,21 +59,27 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, setDevtoolsHook } from 'vue';
+import {mixinWebsocket} from '../utils/socket.js';
 
 export default defineComponent({
     name: 'NavBar',
+    mixins: [mixinWebsocket],
     data (){
       return {
         username : localStorage.getItem('username') || 'Jason',
         lat : 0,
         lon : 0,
+        url : '',
+        content : '',
       }
     },
     mounted(){
       const pos = this.$store.getters["myself/getPos"];
       this.lat = pos[0];
       this.lon = pos[1];
+
+      mixinWebsocket.methods.initWebsocket();
     },
     watch:{
 		'$store.state.myself.pos'(newVal, oldVal){
@@ -84,6 +90,18 @@ export default defineComponent({
     methods: {
       updatePosition() {
         this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
+      },
+      checkIn(){
+        const data = {
+          'event': 'check_in',
+          'url': this.url,
+          'content': this.content,
+          'pos': [ parseFloat(this.lat) , parseFloat(this.lon) ],
+        };
+        
+        console.log("WS to backend : ")
+        console.log(data);
+        mixinWebsocket.methods.websocketsend(data);
       }
     },
 });
