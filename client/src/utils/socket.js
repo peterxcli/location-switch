@@ -10,7 +10,7 @@ export const mixinWebsocket = {
         ...mapMutations(['setUser', 'updateUserById']),
         //初始websocket
         initWebsocket(){
-            userId = localStorage.getItem('userId');
+            let userId = localStorage.getItem('userId');
             let wsURL = `${config.server_ws}/user/stream/${userId}`;
             this.ws = new WebSocket(wsURL);
             this.ws.onopen = this.websocketonopen;
@@ -33,16 +33,16 @@ export const mixinWebsocket = {
                     this.updateUserById(data.id, data);
                     break;
                 case 'check_in':
-                    //TODO: check_in
+                    
                     break;
                 default:
                     break;
             }
         },
         websocketsend(data){
-            event_name = data.event;
+            this.ws.send( data );
             //前端丟資料
-            console.log('send data',data);
+            console.log('ws client send data:',data);
         },
         websocketclose(){
             console.log('ws 關閉連線')
