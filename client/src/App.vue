@@ -17,11 +17,6 @@ export default {
   created(){
     this.init();
   },
-  data() {
-    return {
-      KeyEventManager: null,
-    }
-  },
 }
 </script>
 
