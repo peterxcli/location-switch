@@ -10,7 +10,7 @@ export const mixinWebsocket = {
          ...mapMutations(['setUser']),
         //初始websocket
         initWebsocket(){
-            userId = localStorage.getItem('userId');
+            let userId = localStorage.getItem('userId');
             let wsURL = `${config.server_ws}/user/stream/${userId}`;
             this.ws = new WebSocket(wsURL);
             this.ws.onopen = this.websocketonopen;
@@ -35,7 +35,7 @@ export const mixinWebsocket = {
             console.log('ws 取得資料',_data);
         },
         websocketsend(data){
-            event_name = data.event;
+            let event_name = data.event;
             //前端丟資料
             console.log('send data',data);
         },
