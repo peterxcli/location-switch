@@ -77,7 +77,7 @@ export default defineComponent({
     },
     methods: {
       updatePosition() {
-        this.$store.dispatch("myself/setPos", [ parseInt(this.lat) , parseInt(this.lon) ] );
+        this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
       }
     },
 });
