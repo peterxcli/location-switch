@@ -1,6 +1,6 @@
 <template>
     <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/S17dSa1Vups?controls=0&autoplay=1&mute=1&playsinline=1&loop=1&t=764"></iframe>
+        <iframe aria-label="bg-cityscape" src="https://www.youtube.com/embed/S17dSa1Vups?controls=0&autoplay=1&mute=1&playsinline=1&loop=1&t=764"></iframe>
     </div>
     <div class="register-form">
         <h1>Register</h1>

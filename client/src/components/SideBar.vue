@@ -75,6 +75,12 @@ export default defineComponent({
       this.lat = pos[0];
       this.lon = pos[1];
     },
+    watch:{
+		'$store.state.myself.pos'(newVal, oldVal){
+			this.lat = newVal[0];
+      this.lon = newVal[1];
+		}
+	},
     methods: {
       updatePosition() {
         this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
