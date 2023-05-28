@@ -22,6 +22,7 @@ export const KeyEventManager = {
         ...mapMutations('myself', ['updPos']),
         init() {
             document.addEventListener(`keydown`, e => {
+                if (e.code != `KeyW` && e.code != `ArrowUp` && e.code != `KeyS` && e.code != `ArrowDown` && e.code != `KeyA` && e.code != `ArrowLeft` && e.code != `KeyD` && e.code != `ArrowRight`) return;
                 if (e.code == `KeyW` || e.code == `ArrowUp`) {
                     this.lat += this.speed;
                 } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
