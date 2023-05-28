@@ -42,6 +42,18 @@
   - check_in :
     - `{ 'event':'check_in' , 'user' : 'ouo' , 'pos' : [65.12,304.3], 'img' : 'image_url' , 'content' : 'Lunch :p', 'created_at': '2020-04-0 12:00:00' }`
 
+- Backend to client :
+  - `event` :
+    - `update`
+    - `message`
+    - `check_in`
+  - update
+    - { 'event':'update' , 'username': 'jason', 'pos' : [11.22, 33.44] }
+  - message
+    - { 'event':'message' , 'username': 'jason', 'pos' : [11.22, 33.44], message: 'Hi all!' }
+  - check_in
+    - {'event': 'check_in', 'id': 'twjet-wrqwrwqe', 'user_id': 'fwefwe34wre', 'username': 'jason', 'pos': [11.22, 33.44], 'img': 'image_url', 'content': 'Lunch :p', 'created_at': '2020-04-0 12:00:00''}
+
 ### schema
 
 ```python
