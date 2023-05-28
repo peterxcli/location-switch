@@ -16,7 +16,7 @@ async def get_user_list():
     return {k: v.dict(exclude_unset=True, exclude_none=True) for k, v in userManager.users.items() if v}
 
 @router.websocket("/stream/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: int):
+async def websocket_endpoint(websocket: WebSocket, client_id: str):
     await userManager.connect(websocket, client_id)
     try:
         while True:
