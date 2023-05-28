@@ -28,16 +28,16 @@ export const mixinWebsocket = {
             // 後端通知前端，前端取得資料
             let _data = e.data;
             //當有後端資料送到前端，利用vuex存到共用的state
-            this.setWsNotify({
-                id:uuid.v4(), 
-                data: JSON.parse(_data)
-            });
+            // this.setWsNotify({
+            //     id:uuid.v4(), 
+            //     data: JSON.parse(_data)
+            // });
             console.log('ws 取得資料',_data);
         },
         websocketsend(data){
-            let event_name = data.event;
+            this.ws.send( data );
             //前端丟資料
-            console.log('send data',data);
+            console.log('ws client send data:',data);
         },
         websocketclose(){
             console.log('ws 關閉連線')

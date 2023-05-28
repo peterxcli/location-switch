@@ -34,7 +34,7 @@
           <br>
           <input v-model="content" id="content-input" type="text" placeholder="check in post ..."/>
           <br>
-          <button type="button" @click="checkIn">check in</button>
+          <button type="button" @click="onCheckIn">check in</button>
         </form>
       </div>
     </div>
@@ -46,8 +46,8 @@
       </div>
       <div class="form-col">
         <form class="broadcast-form">
-          <input id="lon-input" type="text" placeholder="Aa"/>
-          <button type="button" @click="updatePosition">Send</button>
+          <input v-model="message" id="lon-input" type="text" placeholder="Aa"/>
+          <button type="button" @click="onSendMessage">Send</button>
         </form>
       </div>
     </div>
@@ -72,6 +72,7 @@ export default defineComponent({
         lon : 0,
         url : '',
         content : '',
+        message : '',
       }
     },
     mounted(){
@@ -79,7 +80,8 @@ export default defineComponent({
       this.lat = pos[0];
       this.lon = pos[1];
 
-      mixinWebsocket.methods.initWebsocket();
+      //  init websocket in `App.vue`
+      // mixinWebsocket.methods.initWebsocket();
     },
     watch:{
 		'$store.state.myself.pos'(newVal, oldVal){
@@ -91,18 +93,23 @@ export default defineComponent({
       updatePosition() {
         this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
       },
-      checkIn(){
+      onCheckIn(){
         const data = {
           'event': 'check_in',
-          'url': this.url,
-          'content': this.content,
           'pos': [ parseFloat(this.lat) , parseFloat(this.lon) ],
+          'img': this.url,
+          'content': this.content,
         };
-        
-        console.log("WS to backend : ")
-        console.log(data);
-        mixinWebsocket.methods.websocketsend(data);
-      }
+        mixinWebsocket.methods.websocketsend(JSON.stringify(data));
+      },
+      onSendMessage(){
+        const data = {
+          'event': 'message',
+          'message': this.message,
+          'username': this.username,
+        };
+        mixinWebsocket.methods.websocketsend(JSON.stringify(data));
+      },
     },
 });
 </script>
