@@ -36,54 +36,6 @@ var isDown = false;
 var isLeft = false;
 var isRight = false;
 
-document.addEventListener(`keydown`, e => {
-
-    if (e.code == `KeyW` || e.code == `ArrowUp`) {
-        posX += step;
-    } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
-        posX -= step;
-    }
-
-    if (e.code == `KeyA` || e.code == `ArrowLeft`) {
-        posY -= step;
-    } else if (e.code == `KeyD` || e.code == `ArrowRight`) {
-        posY += step;
-    }
-
-    if (e.code == `KeyW` || e.code == `ArrowUp`) {
-        isUp = true;
-    } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
-        isDown = true;
-    }
-
-    if (e.code == `KeyA` || e.code == `ArrowLeft`) {
-        isLeft = true;
-    } else if (e.code == `KeyD` || e.code == `ArrowRight`) {
-        isRight = true;
-    }
-
-    posX += isUp ? step : 0;
-    posX -= isDown ? step : 0;
-    posY -= isLeft ? step : 0;
-    posY += isRight ? step : 0;
-
-    // mapObject.panTo([posX, posY]);
-    // userMarker.setLatLng([posX, posY]).update();
-});
-
-document.addEventListener(`keyup`, e => {
-    if (e.code == `KeyW` || e.code == `ArrowUp`) {
-        isUp = false;
-    } else if (e.code == `KeyS` || e.code == `ArrowDown`) {
-        isDown = false;
-    }
-
-    if (e.code == `KeyA` || e.code == `ArrowLeft`) {
-        isLeft = false;
-    } else if (e.code == `KeyD` || e.code == `ArrowRight`) {
-        isRight = false;
-    }
-});
 
 
 export default defineComponent({
