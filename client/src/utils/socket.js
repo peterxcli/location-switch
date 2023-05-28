@@ -7,7 +7,7 @@ export const mixinWebsocket = {
         }
     },
     methods:{
-         ...mapMutations(['setUser']),
+        ...mapMutations(['setUser', 'updateUserById']),
         //初始websocket
         initWebsocket(){
             userId = localStorage.getItem('userId');
@@ -25,14 +25,19 @@ export const mixinWebsocket = {
             console.error('ws 連線失敗',e);
         },
         websocketonmessage(e){
-            // 後端通知前端，前端取得資料
-            let _data = e.data;
-            //當有後端資料送到前端，利用vuex存到共用的state
-            this.setWsNotify({
-                id:uuid.v4(), 
-                data: JSON.parse(_data)
-            });
-            console.log('ws 取得資料',_data);
+            let data = JSON.parse(e);
+            console.log('ws 取得資料', data);
+            switch (data.event) {
+                case 'update':
+                    delete data.event;
+                    this.updateUserById(data.id, data);
+                    break;
+                case 'check_in':
+                    //TODO: check_in
+                    break;
+                default:
+                    break;
+            }
         },
         websocketsend(data){
             event_name = data.event;
