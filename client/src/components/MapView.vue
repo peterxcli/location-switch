@@ -29,10 +29,23 @@
                 <l-marker v-if="checkIn.pos" :key="checkIn.id" :lat-lng="checkIn.pos">
                     <l-icon :icon-url="(checkIn.user == myUserName ? icon.type.green : icon.type.gold)" :shadow-url="icon.checkInConfig.shadowUrl" :icon-size="icon.checkInConfig.iconSize"
                         :icon-anchor="icon.checkInConfig.iconAnchor" :popup-anchor="icon.checkInConfig.popupAnchor" :shadow-size="icon.checkInConfig.shadowSize" />
-                    <l-popup>
-                        {{ checkIn.username }}
-                        {{ checkIn.img }}
-                        {{ checkIn.content }}
+                    <l-popup style="width: 300px;">
+                        <p>
+                            <strong>{{ checkIn.user }}</strong>
+                            <span> at </span>
+                            <span>( </span>
+                            <strong>{{ checkIn.pos[0].toFixed(2) }}</strong>
+                            <span>,</span>
+                            <strong>{{ checkIn.pos[1].toFixed(2) }}</strong>
+                            <span> )</span>
+                            <br>
+                            <span style="color: gray;">{{ checkIn.created_at.substr(0,10).replace('-','/') }}</span>
+                        </p>
+                        <p>{{ checkIn.content }}</p>
+                        <div style="display: flex;justify-content: center;">
+                            <img :src="checkIn.img" :alt="checkIn.img" style="width:80%;margin: auto 0;"/>
+                        </div>
+                        
                     </l-popup>
                 </l-marker>
             </template>
@@ -114,7 +127,7 @@ export default defineComponent({
     methods: {
         async func() {
             // do something
-        }
+        },
     },
     async created() {
         await this.$store.dispatch('users/getAllUsers')
