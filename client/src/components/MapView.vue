@@ -5,12 +5,12 @@
                 name="OpenStreetMap"></l-tile-layer>
 
             <template v-for="user in users" :key="user.id">
-                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos">
+                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos" ref="userMarker">
                     <l-icon :icon-url="icon.type.black" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                         :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
                     <!-- 彈出視窗 -->
-                    <l-popup>
-                        {{ user.username }}
+                    <l-popup ref="userPopup">
+                        {{ user.username }} : {{ user.message }}
                     </l-popup>
                 </l-marker>
             </template>
@@ -20,7 +20,7 @@
                 <l-icon :icon-url="icon.type.red" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                     :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
                 <!-- 彈出視窗 -->
-                <l-popup>
+                <l-popup >
                     {{ myself }}
                 </l-popup>
             </l-marker>
@@ -88,8 +88,22 @@ export default defineComponent({
     },
     watch:{
 		'$store.state.users.checkIn'(newVal, oldVal){
+            console.log('eat my dick: ', newVal);
 			this.checkInList = newVal;
 	    },
+        '$store.state.users.all'(newVal, oldVal){
+            console.log(newVal);
+            let diff = [];
+            for (user in newVal) {
+                console.log(user);
+                if (user.message !== oldVal[user.id].message) {
+                    diff.push(user)
+                }
+            }
+            for (user in diff) {
+                this.$refs.userPopup[user.id].openPopup();
+            }
+        }
     },
     mounted() {
     },

@@ -37,16 +37,10 @@ const mutations = {
     setUsers(state, users) {
         state.all = users
     },
-    UPDATE_USER_BY_ID(state, id, _user) { // id:str , _user:{ 'user' : 'user1' , 'pos' : [11.22,33.44] }   
-        // const user = state.all.find(user => user.id === id)
-        // user = _user
-        if( _user['pos'] != null ){
-            state.all[id]['pos'] = _user['pos'];
-        }
-        if( _user['user'] != null ){
-            state.all[id]['user'] = _user['user'];
-        }
-
+    UPDATE_USER_BY_ID(state, _user) { // id:str , _user:{ 'user' : 'user1' , 'pos' : [11.22,33.44] }
+        let id = _user['id']
+        console.log('UPDATE_USER_BY_ID:::',id, _user)
+        state.all[id] = _user
     },
     ADD_USER(state, username,pos) { // username:str , pos:[lat,lng]
         state.users[username] = { 'pos' : pos }
