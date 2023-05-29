@@ -95,6 +95,7 @@ export default defineComponent({
       },
       onCheckIn(){
         let data = {
+          'user' : this.username,
           'event': 'check_in',
           'pos': [ parseFloat(this.lat) , parseFloat(this.lon) ],
           'img': this.url,
@@ -103,6 +104,7 @@ export default defineComponent({
         mixinWebsocket.methods.websocketsend(JSON.stringify(data));
 
         data['user'] = this.username;
+        data['created_at'] = new Date().toLocaleString();
         console.log( "set my self checkIn : " , data);
         this.$store.dispatch('users/addCheckIn', data);
       },
