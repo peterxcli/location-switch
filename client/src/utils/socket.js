@@ -55,7 +55,7 @@ export const mixinWebsocket = {
                     event: 'new_user',
                     username : localStorage.getItem('username'),
                 }
-                this.ws.send(newUserEvent);
+                this.ws.send(JSON.stringify(newUserEvent));
             }
             this.ws.send( data );
             //前端丟資料

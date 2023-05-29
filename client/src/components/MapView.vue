@@ -5,7 +5,7 @@
                 name="OpenStreetMap"></l-tile-layer>
 
             <template v-for="user in users" :key="user.id">
-                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos" ref="userMarker" :options="{id: user.id}">
+                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos" ref="userMarker" :options="{ id: user.id }">
                     <l-icon :icon-url="icon.type.black" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                         :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
                     <l-popup ref="userPopup">
@@ -26,8 +26,10 @@
             <!-- check_in -->
             <template v-for="checkIn in checkInList" :key="checkIn.id">
                 <l-marker v-if="checkIn.pos" :key="checkIn.id" :lat-lng="checkIn.pos">
-                    <l-icon :icon-url="(checkIn.user == myUserName ? icon.type.green : icon.type.gold)" :shadow-url="icon.checkInConfig.shadowUrl" :icon-size="icon.checkInConfig.iconSize"
-                        :icon-anchor="icon.checkInConfig.iconAnchor" :popup-anchor="icon.checkInConfig.popupAnchor" :shadow-size="icon.checkInConfig.shadowSize" />
+                    <l-icon :icon-url="(checkIn.user == myUserName ? icon.type.green : icon.type.gold)"
+                        :shadow-url="icon.checkInConfig.shadowUrl" :icon-size="icon.checkInConfig.iconSize"
+                        :icon-anchor="icon.checkInConfig.iconAnchor" :popup-anchor="icon.checkInConfig.popupAnchor"
+                        :shadow-size="icon.checkInConfig.shadowSize" />
                     <l-popup style="width: 300px;">
                         <p>
                             <strong>{{ checkIn.user }}</strong>
@@ -38,13 +40,13 @@
                             <strong>{{ checkIn.pos[1].toFixed(2) }}</strong>
                             <span> )</span>
                             <br>
-                            <span style="color: gray;">{{ checkIn.created_at.substr(0,10).replace('-','/') }}</span>
+                            <span style="color: gray;">{{ checkIn.created_at.substr(0, 10).replace('-', '/') }}</span>
                         </p>
                         <p>{{ checkIn.content }}</p>
                         <div style="display: flex;justify-content: center;">
-                            <img :src="checkIn.img" :alt="checkIn.img" style="width:80%;margin: auto 0;"/>
+                            <img :src="checkIn.img" :alt="checkIn.img" style="width:80%;margin: auto 0;" />
                         </div>
-                        
+
                     </l-popup>
                 </l-marker>
             </template>
@@ -60,6 +62,7 @@ import L from "leaflet";
 import { defineComponent, ref } from 'vue';
 import { mapState, mapActions } from 'vuex';
 import { LMap, LTileLayer, LMarker, LPopup, LIcon } from "@vue-leaflet/vue-leaflet";
+import { mixinWebsocket } from '../utils/socket.js';
 
 var mapObject = null;
 var userMarker = null;
@@ -75,6 +78,7 @@ var isRight = false;
 
 
 export default defineComponent({
+    mixins: [mixinWebsocket],
     components: {
         LMap,
         LTileLayer,
@@ -121,49 +125,26 @@ export default defineComponent({
         };
     },
     watch: {
-        // '$store.state.users.all': {
-        //     handler(newVal, oldVal) {
-        //         console.log(newVal, oldVal)
-        //         newVal = JSON.parse(JSON.stringify(Object.values(newVal)));
-        //         oldVal = JSON.parse(JSON.stringify(Object.values(oldVal)));
-        //         let newObj = newVal.reduce((acc, item) => {
-        //             acc[item.id] = item;
-        //             return acc;
-        //         }, {});
-        //         let oldObj = oldVal.reduce((acc, item) => {
-        //             acc[item.id] = item;
-        //             return acc;
-        //         }, {});
-        //         let diff = [];
-        //         for (let id in newObj) {
-        //             let user = newObj[id]
-        //             let oldUser = oldObj[id];
-        //             console.log(user, oldUser)
-        //             if (oldUser && user.message !== oldUser.message) {
-        //                 diff.push(user);
-        //             }
-        //         }
-        //         console.log('message diff user', diff)
-        //         for (let user of diff) {
-        //             this.$refs.userPopup[user.id].openPopup();
-        //         }
-        //     },
-        // },
         '$store.state.users.message': {
             handler(newVal, oldVal) {
                 console.log(this.$refs.userMarker)
+                if (!this.$refs.userMarker) return;
                 let marker = this.$refs.userMarker.find((marker) => marker.options.id === newVal.id);
                 console.log('target marker', marker)
                 marker.leafletObject.openPopup();
-                // console.log(userMarkerRefs)
-                // this.$refs[`userMarker${id}`].leafletObject.openPopup();
-                // console.log(this.$refs[`userMarker${id}`].leafletObject)
-
-                // this.$nextTick(() => {
-                //     this.$refs.userMarker[0].leafletObject.openPopup();
-                // });
             },
         },
+        '$store.state.myself.pos': {
+            handler(newVal, oldVal) {
+                console.log('myself pos change', newVal, oldVal)
+                let data = {
+                    'event': 'move',
+                    'pos': newVal
+                };
+                // this.$refs.map.leafletObject.setView(newVal, this.zoom);
+                mixinWebsocket.methods.websocketsend(JSON.stringify(data));
+            }
+        }
     },
     mounted() {
     },
