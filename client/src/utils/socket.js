@@ -1,5 +1,5 @@
 import { mapMutations } from 'vuex';
-import { store } from '../store';
+import store from '../store';
 import config from '../config';
 export const mixinWebsocket = {
     data(){
@@ -34,6 +34,7 @@ export const mixinWebsocket = {
                     this.updateUserById(data.id, data);
                     break;
                 case 'check_in':
+                    console.log('get backend check_in : ', data);
                     store.dispatch('users/addCheckIn', data);
                     // this.addCheckIn(data);
                     break;

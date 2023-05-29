@@ -15,15 +15,28 @@
                 </l-marker>
             </template>
 
-            <!-- check_in -->
+            <!-- myself -->
             <l-marker :lat-lng="myself">
                 <l-icon :icon-url="icon.type.red" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                     :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
-                <!-- 彈出視窗 -->
                 <l-popup>
                     {{ myself }}
                 </l-popup>
             </l-marker>
+
+            <!-- check_in -->
+            <template v-for="checkIn in checkInList" :key="checkIn.id">
+                <l-marker v-if="checkIn.pos" :key="checkIn.id" :lat-lng="checkIn.pos">
+                    <l-icon :icon-url="(checkIn.user == myUserName ? icon.type.green : icon.type.gold)" :shadow-url="icon.checkInConfig.shadowUrl" :icon-size="icon.checkInConfig.iconSize"
+                        :icon-anchor="icon.checkInConfig.iconAnchor" :popup-anchor="icon.checkInConfig.popupAnchor" :shadow-size="icon.checkInConfig.shadowSize" />
+                    <l-popup>
+                        {{ checkIn.username }}
+                        {{ checkIn.img }}
+                        {{ checkIn.content }}
+                    </l-popup>
+                </l-marker>
+            </template>
+
 
         </l-map>
 
@@ -60,11 +73,13 @@ export default defineComponent({
     computed: {
         ...mapState({
             users: state => state.users.all,
-            myself: state => state.myself.pos
+            myself: state => state.myself.pos,
+            checkInList: state => state.users.checkIn,
         })
     },
     data() {
         return {
+            myUserName : localStorage.getItem('username') || 'Jason',
             streetMap: null,
             zoom: 18,
             icon: {
@@ -75,21 +90,23 @@ export default defineComponent({
                         "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
                     red:
                         "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                    green:
+                        "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
                 },
                 shadowUrl:
                     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
-                shadowSize: [41, 41]
+                shadowSize: [41, 41],
+                checkInConfig:{
+                    iconSize: [22,34],
+                    iconAnchor: [10, 34],
+                    popupAnchor: [1, -27],
+                    shadowSize: [34, 34],
+                }
             },
-            checkInList: [],
         };
-    },
-    watch:{
-		'$store.state.users.checkIn'(newVal, oldVal){
-			this.checkInList = newVal;
-	    },
     },
     mounted() {
     },

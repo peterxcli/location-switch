@@ -94,13 +94,17 @@ export default defineComponent({
         this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
       },
       onCheckIn(){
-        const data = {
+        let data = {
           'event': 'check_in',
           'pos': [ parseFloat(this.lat) , parseFloat(this.lon) ],
           'img': this.url,
           'content': this.content,
         };
         mixinWebsocket.methods.websocketsend(JSON.stringify(data));
+
+        data['user'] = this.username;
+        console.log( "set my self checkIn : " , data);
+        this.$store.dispatch('users/addCheckIn', data);
       },
       onSendMessage(){
         const data = {
