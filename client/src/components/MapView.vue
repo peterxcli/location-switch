@@ -15,7 +15,18 @@
                 </l-marker>
             </template>
 
+            <!-- check_in -->
+            <l-marker :lat-lng="myself">
+                <l-icon :icon-url="icon.type.red" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
+                    :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
+                <!-- 彈出視窗 -->
+                <l-popup>
+                    {{ myself }}
+                </l-popup>
+            </l-marker>
+
         </l-map>
+
     </div>
 </template>
   
@@ -61,7 +72,9 @@ export default defineComponent({
                     black:
                         "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png",
                     gold:
-                        "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png"
+                        "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
+                    red:
+                        "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
                 },
                 shadowUrl:
                     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
@@ -69,8 +82,14 @@ export default defineComponent({
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41]
-            }
+            },
+            checkInList: [],
         };
+    },
+    watch:{
+		'$store.state.users.checkIn'(newVal, oldVal){
+			this.checkInList = newVal;
+	    },
     },
     mounted() {
     },

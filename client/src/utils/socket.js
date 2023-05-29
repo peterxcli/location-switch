@@ -1,4 +1,5 @@
 import { mapMutations } from 'vuex';
+import { store } from '../store';
 import config from '../config';
 export const mixinWebsocket = {
     data(){
@@ -7,7 +8,7 @@ export const mixinWebsocket = {
         }
     },
     methods:{
-        ...mapMutations(['setUser', 'updateUserById']),
+        ...mapMutations(['setUser', 'updateUserById','addCheckIn']),
         //初始websocket
         initWebsocket(){
             let userId = localStorage.getItem('userId');
@@ -25,7 +26,7 @@ export const mixinWebsocket = {
             console.error('ws 連線失敗',e);
         },
         websocketonmessage(e){
-            let data = JSON.parse(e);
+            let data = JSON.parse(e.data);
             console.log('ws 取得資料', data);
             switch (data.event) {
                 case 'update':
@@ -33,7 +34,8 @@ export const mixinWebsocket = {
                     this.updateUserById(data.id, data);
                     break;
                 case 'check_in':
-                    
+                    store.dispatch('users/addCheckIn', data);
+                    // this.addCheckIn(data);
                     break;
                 default:
                     break;
