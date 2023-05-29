@@ -5,7 +5,7 @@
                 name="OpenStreetMap"></l-tile-layer>
 
             <template v-for="user in users" :key="user.id">
-                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos" ref="userMarker" :options="{ id: user.id }">
+                <l-marker v-if="user.pos && user.id != myUserId" :key="user.id" :lat-lng="user.pos" ref="userMarker" :options="{ id: user.id }">
                     <l-icon :icon-url="icon.type.black" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                         :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
                     <l-popup ref="userPopup">
@@ -95,6 +95,7 @@ export default defineComponent({
     },
     data() {
         return {
+            myUserId: localStorage.getItem('userId') || 'fftgvghyuhuijikk',
             myUserName: localStorage.getItem('username') || 'Jason',
             streetMap: null,
             zoom: 18,

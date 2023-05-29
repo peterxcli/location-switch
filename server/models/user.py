@@ -19,8 +19,9 @@ class ConnectionManager:
         self.active_connections.remove(websocket)
 
     async def update_user(self, client_id: str, event: schemas.UserReceived, websocket: WebSocket):
+        print(f"update_user: {event}")
         user_data = dict(self.users[client_id])
-        event_copy = event.dict().copy()
+        event_copy = event.dict(exclude_none=True, exclude_unset=True).copy()
         event_copy.pop("event", None)
         user_data.update(event_copy)
         self.users[client_id] = schemas.User(**user_data)
