@@ -34,7 +34,7 @@
     - `message`
     - `check_in`
   - new_user :
-    - `{ 'event':'new_user' , 'user' : 'jason' }`
+    - `{ 'event':'new_user' , 'username' : 'jason' }`
   - move :
     - `{ 'event':'move' , 'user' : 'peter' , 'pos' : [ 11.15,22.21 ] }`
   - message :
