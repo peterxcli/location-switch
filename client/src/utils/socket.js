@@ -36,6 +36,7 @@ export const mixinWebsocket = {
                     store.dispatch('users/updateUserById', data);
                     break;
                 case 'check_in':
+                    console.log('get backend check_in : ', data);
                     store.dispatch('users/addCheckIn', data);
                     break;
                 case 'message':

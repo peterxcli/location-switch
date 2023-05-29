@@ -54,7 +54,7 @@ const mutations = {
     },
     ADD_CHECK_IN(state, checkIn) { // checkIn: { 'user' : 'jason', 'pos' : [11.22,33.44] , 'img' : 'image_url' , 'content' : 'Save water for beer!' } 
         console.log('addCheckIn:::',checkIn)
-        state.checkIn.push(checkIn)
+        state.checkIn.push(checkIn);
     },
 }
 
