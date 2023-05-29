@@ -36,11 +36,11 @@
   - new_user :
     - `{ 'event':'new_user' , 'username' : 'jason' }`
   - move :
-    - `{ 'event':'move' , 'user' : 'peter' , 'pos' : [ 11.15,22.21 ] }`
+    - `{ 'event':'move', 'pos' : [ 11.15,22.21 ] }`
   - message :
-    - `{ 'event':'message' , 'user' : 'owen' , 'message' : 'Hi all!' }`
+    - `{ 'event':'message', 'message' : 'Hi all!' }`
   - check_in :
-    - `{ 'event':'check_in' , 'user' : 'ouo' , 'pos' : [65.12,304.3], 'img' : 'image_url' , 'content' : 'Lunch :p', 'created_at': '2020-04-0 12:00:00' }`
+    - `{ 'event':'check_in', 'pos' : [65.12,304.3], 'img' : 'image_url' , 'content' : 'Lunch :p', 'created_at': '2020-04-0 12:00:00' }`
 
 - Backend to client :
   - `event` :

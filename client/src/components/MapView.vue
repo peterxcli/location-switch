@@ -5,12 +5,11 @@
                 name="OpenStreetMap"></l-tile-layer>
 
             <template v-for="user in users" :key="user.id">
-                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos">
+                <l-marker v-if="user.pos" :key="user.id" :lat-lng="user.pos" ref="userMarker" :options="{id: user.id}">
                     <l-icon :icon-url="icon.type.black" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                         :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
-                    <!-- 彈出視窗 -->
-                    <l-popup>
-                        {{ user.username }}
+                    <l-popup ref="userPopup">
+                        {{ user.username }} : {{ user.message }}
                     </l-popup>
                 </l-marker>
             </template>
@@ -58,7 +57,7 @@
   
 <script>
 import L from "leaflet";
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { mapState, mapActions } from 'vuex';
 import { LMap, LTileLayer, LMarker, LPopup, LIcon } from "@vue-leaflet/vue-leaflet";
 
@@ -92,7 +91,7 @@ export default defineComponent({
     },
     data() {
         return {
-            myUserName : localStorage.getItem('username') || 'Jason',
+            myUserName: localStorage.getItem('username') || 'Jason',
             streetMap: null,
             zoom: 18,
             icon: {
@@ -112,14 +111,59 @@ export default defineComponent({
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41],
-                checkInConfig:{
-                    iconSize: [22,34],
+                checkInConfig: {
+                    iconSize: [22, 34],
                     iconAnchor: [10, 34],
                     popupAnchor: [1, -27],
                     shadowSize: [34, 34],
                 }
             },
         };
+    },
+    watch: {
+        // '$store.state.users.all': {
+        //     handler(newVal, oldVal) {
+        //         console.log(newVal, oldVal)
+        //         newVal = JSON.parse(JSON.stringify(Object.values(newVal)));
+        //         oldVal = JSON.parse(JSON.stringify(Object.values(oldVal)));
+        //         let newObj = newVal.reduce((acc, item) => {
+        //             acc[item.id] = item;
+        //             return acc;
+        //         }, {});
+        //         let oldObj = oldVal.reduce((acc, item) => {
+        //             acc[item.id] = item;
+        //             return acc;
+        //         }, {});
+        //         let diff = [];
+        //         for (let id in newObj) {
+        //             let user = newObj[id]
+        //             let oldUser = oldObj[id];
+        //             console.log(user, oldUser)
+        //             if (oldUser && user.message !== oldUser.message) {
+        //                 diff.push(user);
+        //             }
+        //         }
+        //         console.log('message diff user', diff)
+        //         for (let user of diff) {
+        //             this.$refs.userPopup[user.id].openPopup();
+        //         }
+        //     },
+        // },
+        '$store.state.users.message': {
+            handler(newVal, oldVal) {
+                console.log(this.$refs.userMarker)
+                let marker = this.$refs.userMarker.find((marker) => marker.options.id === newVal.id);
+                console.log('target marker', marker)
+                marker.leafletObject.openPopup();
+                // console.log(userMarkerRefs)
+                // this.$refs[`userMarker${id}`].leafletObject.openPopup();
+                // console.log(this.$refs[`userMarker${id}`].leafletObject)
+
+                // this.$nextTick(() => {
+                //     this.$refs.userMarker[0].leafletObject.openPopup();
+                // });
+            },
+        },
     },
     mounted() {
     },

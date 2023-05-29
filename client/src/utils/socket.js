@@ -32,12 +32,16 @@ export const mixinWebsocket = {
             switch (data.event) {
                 case 'update':
                     delete data.event;
-                    this.updateUserById(data.id, data);
+                    // this.updateUserById(data.id, data);
+                    console.log('updateUserById:::',data.id, data);
+                    store.dispatch('users/updateUserById', data);
                     break;
                 case 'check_in':
                     console.log('get backend check_in : ', data);
                     store.dispatch('users/addCheckIn', data);
-                    // this.addCheckIn(data);
+                    break;
+                case 'message':
+                    store.dispatch('users/updateUserMessageById', data);
                     break;
                 default:
                     break;
