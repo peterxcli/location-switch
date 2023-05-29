@@ -40,6 +40,7 @@ export const mixinWebsocket = {
                     store.dispatch('users/addCheckIn', data);
                     break;
                 case 'message':
+                    store.dispatch('users/updateUserMessageById', data);
                     break;
                 default:
                     break;
