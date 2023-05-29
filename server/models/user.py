@@ -13,7 +13,8 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, client_id: Union[int, str]):
         await websocket.accept()
         self.active_connections.append(websocket)
-        self.users[client_id] = schemas.User(id=client_id)
+        if client_id not in self.users:
+            self.users[client_id] = schemas.User(id=client_id)
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
