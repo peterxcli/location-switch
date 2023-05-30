@@ -52,7 +52,12 @@ export const KeyEventManager = {
                 this.lon -= this.isLeft ? this.speed : 0;
                 this.lon += this.isRight ? this.speed : 0;
 
-                this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
+                const delta_lat = this.isUp ? this.speed : 0 - this.isDown ? this.speed : 0;
+                const delta_lon = this.isLeft ? this.speed : 0 - this.isRight ? this.speed : 0;
+                this.$store.dispatch("myself/updPos", [ parseFloat(delta_lat) , parseFloat(delta_lon) ] );
+
+                // this.$store.dispatch("myself/updPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
+                // this.$store.dispatch("myself/setPos", [ parseFloat(this.lat) , parseFloat(this.lon) ] );
             
             });
             

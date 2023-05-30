@@ -137,6 +137,9 @@ export default defineComponent({
         },
         '$store.state.myself.pos': {
             handler(newVal, oldVal) {
+                console.log(newVal, oldVal)
+                // console.log(mixinWebsocket.data.ws, mixinWebsocket.data.ws.readyState)
+                if (!mixinWebsocket.data.ws || mixinWebsocket.data.ws.readyState !== 1) return;
                 console.log('myself pos change', newVal, oldVal)
                 let data = {
                     'event': 'move',
