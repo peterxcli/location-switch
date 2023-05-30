@@ -24,7 +24,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
             event:schemas.UserReceived = schemas.UserReceived(**json.loads(data))
             event_name:str = str(event.event)
             if event_name == 'new_user':
-                await userManager.update_user(client_id, event, websocket)
+                await userManager.handle_new_user(client_id, event, websocket)
             elif event_name == "all_info":
                 await userManager.send_all_info_to_one_client(websocket)
             elif event_name == "move":
@@ -40,5 +40,4 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
                         websocket=websocket
                     )
     except WebSocketDisconnect:
-        userManager.disconnect(websocket)
-        await userManager.broadcast(f"Client #{client_id} left the chat")
+        await userManager.disconnect(client_id=client_id, websocket=websocket)
