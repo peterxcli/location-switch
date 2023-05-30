@@ -95,7 +95,7 @@ export default defineComponent({
       },
       onCheckIn(){
         let data = {
-          'user' : this.username,
+          'username' : this.username,
           'event': 'check_in',
           'pos': [ parseFloat(this.lat) , parseFloat(this.lon) ],
           'img': this.url,
