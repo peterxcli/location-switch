@@ -9,7 +9,10 @@
                     <l-icon :icon-url="icon.type.black" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                         :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
                     <l-popup ref="userPopup">
-                        {{ user.username }} : {{ user.message }}
+                        <svg style="width: 10px;margin-left: -5px; margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
+                        <strong>{{ user.username }}</strong>
+                        <br>
+                        <span>{{ user.message }}</span>
                     </l-popup>
                 </l-marker>
             </template>
@@ -18,9 +21,6 @@
             <l-marker :lat-lng="myself">
                 <l-icon :icon-url="icon.type.red" :shadow-url="icon.shadowUrl" :icon-size="icon.iconSize"
                     :icon-anchor="icon.iconAnchor" :popup-anchor="icon.popupAnchor" :shadow-size="icon.shadowSize" />
-                <l-popup>
-                    {{ myself }}
-                </l-popup>
             </l-marker>
 
             <!-- check_in -->
@@ -32,7 +32,7 @@
                         :shadow-size="icon.checkInConfig.shadowSize" />
                     <l-popup style="width: 300px;">
                         <p>
-                            <strong>{{ checkIn.user }}</strong>
+                            <strong>{{ checkIn.username }}</strong>
                             <span> at </span>
                             <span>( </span>
                             <strong>{{ checkIn.pos[0].toFixed(2) }}</strong>
