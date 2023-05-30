@@ -13,10 +13,16 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, client_id: Union[int, str]):
         await websocket.accept()
         self.active_connections.append(websocket)
-        self.users[client_id] = schemas.User(id=client_id)
+        if client_id not in self.users:
+            self.users[client_id] = schemas.User(id=client_id)
 
-    def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, client_id: str, websocket: WebSocket):
+        self.users[client_id].online = False
         self.active_connections.remove(websocket)
+        user_data = self.users[client_id].dict(exclude_unset=True, exclude_none=True)
+        resp = schemas.UserSend(**user_data, event="update")
+        resp_json = json.dumps(resp.dict(exclude_unset=True, exclude_none=True))
+        await self.broadcast(resp_json, exclude_self=True, websocket=websocket)
 
     async def update_user(self, client_id: str, event: schemas.UserReceived, websocket: WebSocket):
         print(f"update_user: {event}")
@@ -24,6 +30,17 @@ class ConnectionManager:
         event_copy = event.dict(exclude_none=True, exclude_unset=True).copy()
         event_copy.pop("event", None)
         user_data.update(event_copy)
+        self.users[client_id] = schemas.User(**user_data)
+        resp = schemas.UserSend(**user_data, event="update")
+        resp_json = json.dumps(resp.dict(exclude_unset=True, exclude_none=True))
+        await self.broadcast(resp_json, exclude_self=True, websocket=websocket)
+
+    async def handle_new_user(self, client_id: str, event: schemas.UserReceived, websocket: WebSocket):
+        user_data = dict(self.users[client_id])
+        event_copy = event.dict(exclude_none=True, exclude_unset=True).copy()
+        event_copy.pop("event", None)
+        user_data.update(event_copy)
+        user_data['online'] = True
         self.users[client_id] = schemas.User(**user_data)
         resp = schemas.UserSend(**user_data, event="update")
         resp_json = json.dumps(resp.dict(exclude_unset=True, exclude_none=True))

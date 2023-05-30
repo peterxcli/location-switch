@@ -6,6 +6,7 @@ class User(BaseModel):
     username: Optional[str] = Field(None)
     pos: Optional[Tuple[float, float]] = Field(None)
     message: Optional[str] = Field(None)
+    online: Optional[bool] = Field(None)
 
 class UserReceived(BaseModel):
     event: str = Field(...) # "message" | "join" | "leave" | "check_in" | "all_info" | "update"
